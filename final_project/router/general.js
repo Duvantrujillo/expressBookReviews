@@ -173,6 +173,7 @@ public_users.get('/externo-title/:title', async (req, res) => {
     const title = req.params.title
 
     //El endpoint es http://localhost:5000/title/:title, donde "/title" es la ruta del recurso y ":title" es el parámetro dinámico que se utiliza para buscar un libro específico por su título.
+    const response = await axios.get(`http://localhost:5000/title/${title}`);
     res.json(response.data)
 
   } catch (error) {
