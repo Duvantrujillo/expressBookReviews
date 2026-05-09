@@ -187,23 +187,30 @@ public_users.get('/externo-title/:title', async (req, res) => {
 //              RETO 5  COMPLETADO
 //////////////////////////////////////////////////
 
-//  Get book review
+
+// Get book review
 public_users.get('/review/:isbn', function (req, res) {
 
-  const isbn = req.params.isbn
-  const busqueda = books[isbn]
+  const book = books[req.params.isbn];
 
-  //Write your code here
-  if (busqueda) {
+  // Si el libro no existe
+  if (!book) {
     return res.json({
-      isbn,
-      title: busqueda.title,
-      reviews: busqueda.reviews
-    })
-    // return res.send(`el ${isbn} le pertenece al libro ${busqueda.title} tiene los siguientes comentarios ${JSON.stringify(busqueda.reviews)}`)
-  } else {
-    return res.status(404).send("libro no encontrado")
+      message: "Book not found."
+    });
   }
-});
 
+  // Si no tiene reviews o está vacío
+  if (!book.reviews || Object.keys(book.reviews).length === 0) {
+    return res.json({
+      message: "No reviews found for this book."
+    });
+  }
+
+  // Si tiene reviews, devolverlas
+  return res.json({
+    reviews: book.reviews
+  });
+
+});
 module.exports.general = public_users;
